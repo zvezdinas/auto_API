@@ -46,7 +46,7 @@ class MyRequests():
         MyLogger.add_response(response, file_name)
         return response
 
-
+    @staticmethod
     def user_auth(self, auth_data, env):
         url = env + '/ServiceModel/AuthService.svc/Login'
 

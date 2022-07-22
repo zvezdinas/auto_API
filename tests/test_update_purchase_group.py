@@ -182,28 +182,6 @@ class TestUpdatePurchaseGroups(BaseCase):
             assert result['MESSAGE'] == "Обязательно для заполнения - EKGRP", f"The value of 'MESSAGE' is not correct"
             assert result['TYPE'] == "E", f"The value of 'TYPE' is not correct"
 
-# Проверка возможности создания записи без обязательных полей режим "F" (пустой "EKNAM")
-
-    def test_all_null_eknam_value_delta_f(self):
-            json_data = {
-                "currentPage": "1",
-                "pageCount": "1",
-                "delta": "F",
-                "item": [
-                    {
-                        "row": "1",
-                        "EKGRP": "main test code 5",
-                        "EKNAM": "",
-                        "deleted": "X"
-                    }
-                ]
-            }
-            response = MyRequests.post(self.url, json=json_data, headers=self.header, cookies=self.jar)
-            Assertion.assert_code_status(response, 200)
-            obj = json.loads(response.text)
-            for result in obj['result']:
-                assert result['MESSAGE'] == "Обязательно для заполнения - EKNAM", f"The value of 'MESSAGE' is not correct"
-                assert result['TYPE'] == "E", f"The value of 'TYPE' is not correct"
 
 # Проверка возможности создания записи без обязательных полей режим "D" (пустой "EKGRP")
 
@@ -227,30 +205,6 @@ class TestUpdatePurchaseGroups(BaseCase):
         for result in obj['result']:
             assert result['MESSAGE'] == "Обязательно для заполнения - EKGRP", f"The value of 'MESSAGE' is not correct"
             assert result['TYPE'] == "E", f"The value of 'TYPE' is not correct"
-
-# Проверка возможности создания записи без обязательных полей режим "D" (пустой "EKNAM")
-
-    def test_all_null_eknam_value_delta_d(self):
-        json_data = {
-            "currentPage": "1",
-            "pageCount": "1",
-            "delta": "F",
-            "item": [
-                {
-                    "row": "1",
-                    "EKGRP": "main test code 6",
-                    "EKNAM": "",
-                    "deleted": "X"
-                }
-            ]
-        }
-        response = MyRequests.post(self.url, json=json_data, headers=self.header, cookies=self.jar)
-        Assertion.assert_code_status(response, 200)
-        obj = json.loads(response.text)
-        for result in obj['result']:
-            assert result['MESSAGE'] == "Обязательно для заполнения - EKNAM", f"The value of 'MESSAGE' is not correct"
-            assert result['TYPE'] == "E", f"The value of 'TYPE' is not correct"
-
 
 # Загрузка уже существующей записи (изменение записи) в режиме полной выгрузки (delta = "F") корректный запрос
 

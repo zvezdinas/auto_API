@@ -245,35 +245,6 @@ class TestUpdatePurchaseGroups(BaseCase):
             assert result['TYPE'] == "E", f"The value of 'TYPE' is not correct"
 
 
-# Проверка возможности создания записи без обязательных полей режим "F" (пустой "DATAB")
-
-    def test_null_datab_value_delta_f(self):
-        json_data = {
-            "currentPage": "1",
-            "pageCount": "1",
-            "delta": "F",
-            "item": [
-                {
-                    "row": "1",
-                    "BUKRS": "main test code 4",
-                    "FICTR": "FMUCode 4",
-                    "DATAB": "",
-                    "DATBIS": "31.12.21",
-                    "BOSSNAME": "FMU Responsible 4",
-                    "BEZEICH": "FMU Name 1",
-                    "BESCHR": "FMU description 4",
-                    "deleted": ""
-                }
-            ]
-        }
-        response = MyRequests.post(self.url, json=json_data, headers=self.header, cookies=self.jar)
-        Assertion.assert_code_status(response, 200)
-        obj = json.loads(response.text)
-        for result in obj['result']:
-            assert result['MESSAGE'] == "Обязательно для заполнения - DATAB", f"The value of 'MESSAGE' is not correct"
-            assert result['TYPE'] == "E", f"The value of 'TYPE' is not correct"
-
-
 # Проверка возможности создания записи без обязательных полей режим "F" (пустой "DATBIS")
 
     def test_null_datbis_value_delta_f(self):
@@ -302,91 +273,6 @@ class TestUpdatePurchaseGroups(BaseCase):
             assert result['MESSAGE'] == "Обязательно для заполнения - DATBIS", f"The value of 'MESSAGE' is not correct"
             assert result['TYPE'] == "E", f"The value of 'TYPE' is not correct"
 
-
-# Проверка возможности создания записи без обязательных полей режим "F" (пустой "BOSSNAME")
-
-    def test_null_bossname_value_delta_f(self):
-        json_data = {
-            "currentPage": "1",
-            "pageCount": "1",
-            "delta": "F",
-            "item": [
-                {
-                    "row": "1",
-                    "BUKRS": "main test code 4",
-                    "FICTR": "FMUCode 4",
-                    "DATAB": "01.01.20",
-                    "DATBIS": "31.12.21",
-                    "BOSSNAME": "",
-                    "BEZEICH": "FMU Name 1",
-                    "BESCHR": "FMU description 4",
-                    "deleted": ""
-                }
-            ]
-        }
-        response = MyRequests.post(self.url, json=json_data, headers=self.header, cookies=self.jar)
-        Assertion.assert_code_status(response, 200)
-        obj = json.loads(response.text)
-        for result in obj['result']:
-            assert result['MESSAGE'] == "Обязательно для заполнения - BOSSNAME", f"The value of 'MESSAGE' is not correct"
-            assert result['TYPE'] == "E", f"The value of 'TYPE' is not correct"
-
-# Проверка возможности создания записи без обязательных полей режим "F" (пустой "BEZEICH")
-
-    def test_null_bezeich_value_delta_f(self):
-        json_data = {
-            "currentPage": "1",
-            "pageCount": "1",
-            "delta": "F",
-            "item": [
-                {
-                    "row": "1",
-                    "BUKRS": "main test code 4",
-                    "FICTR": "FMUCode 4",
-                    "DATAB": "01.01.20",
-                    "DATBIS": "31.12.21",
-                    "BOSSNAME": "FMU Responsible 4",
-                    "BEZEICH": "",
-                    "BESCHR": "FMU description 4",
-                    "deleted": ""
-                }
-            ]
-        }
-        response = MyRequests.post(self.url, json=json_data, headers=self.header, cookies=self.jar)
-        Assertion.assert_code_status(response, 200)
-        obj = json.loads(response.text)
-        for result in obj['result']:
-            assert result['MESSAGE'] == "Обязательно для заполнения - BEZEICH", f"The value of 'MESSAGE' is not correct"
-            assert result['TYPE'] == "E", f"The value of 'TYPE' is not correct"
-
-
-# Проверка возможности создания записи без обязательных полей режим "F" (пустой "BESCHR")
-
-    def test_null_beschr_value_delta_f(self):
-        json_data = {
-            "currentPage": "1",
-            "pageCount": "1",
-            "delta": "F",
-            "item": [
-                {
-                    "row": "1",
-                    "BUKRS": "main test code 4",
-                    "FICTR": "FMUCode 4",
-                    "DATAB": "01.01.20",
-                    "DATBIS": "31.12.21",
-                    "BOSSNAME": "FMU Responsible 4",
-                    "BEZEICH": "FMU Name 4",
-                    "BESCHR": "",
-                    "deleted": ""
-                }
-            ]
-        }
-        response = MyRequests.post(self.url, json=json_data, headers=self.header, cookies=self.jar)
-        Assertion.assert_code_status(response, 200)
-        obj = json.loads(response.text)
-        for result in obj['result']:
-            assert result['MESSAGE'] == "Обязательно для заполнения - BESCHR", f"The value of 'MESSAGE' is not correct"
-            assert result['TYPE'] == "E", f"The value of 'TYPE' is not correct"
 
 # Загрузка уже существующей записи (изменение записи) в режиме полной выгрузки (delta = "F") корректный запрос
 

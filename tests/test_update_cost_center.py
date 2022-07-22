@@ -4,7 +4,7 @@ from my_lib.my_requests import MyRequests
 from my_lib.base_case import BaseCase
 
 
-# python -m pytest -s tests\test_update_cost_center.py -k test_correct_delta_f_demo
+# python -m pytest -s tests\test_update_cost_center.py -k test_correct_delta_f
 
 
 # Тестирование загрузки справочника "Значения аналитического признака "Место возникновения затрат""
@@ -14,12 +14,12 @@ class TestUpdateLogisticStructure(BaseCase):
 # Авторизация и получение необходимых cookie и headers
 
     def setup(self):
-        env = 'http://localhost:83'
+        env = 'http://localmail.itexpert.ru:5057'
         auth_data = {
-            "UserName": "Supervisor",
-            "UserPassword": "Supervisor"
+            "UserName": "a.zvezdin",
+            "UserPassword": "123"
         }
-        self.url = "http://localhost:83/0/rest/SapErpIntegrationService/v1/UpdateCostCenter"
+        self.url = "http://localmail.itexpert.ru:5057/rest/SapErpIntegrationService/v1/UpdateCostCenter"
         self.jar, self.header = MyRequests.user_auth(self, auth_data, env)
 
 
@@ -65,7 +65,7 @@ class TestUpdateLogisticStructure(BaseCase):
             "item": [
                 {
                     "row": "1",
-                    "KOSTL": "main test code 1",
+                    "KOSTL": "main test code 125",
                     "DATBI": "01.01.20",
                     "DATAB": "31.12.21",
                     "BKZKP": "0",
@@ -291,145 +291,6 @@ class TestUpdateLogisticStructure(BaseCase):
             assert result['MESSAGE'] == "Обязательно для заполнения - KOSTL", f"The value of 'MESSAGE' is not correct"
             assert result['TYPE'] == "E", f"The value of 'TYPE' is not correct"
 
-# Проверка возможности создания записи без обязательных полей режим "F" (пустой "DATBI")
-
-    def test_null_datbi_value_delta_f(self):
-        json_data = {
-            "currentPage": "1",
-            "pageCount": "1",
-            "delta": "F",
-            "item": [
-                {
-                    "row": "1",
-                    "KOSTL": "main test code 6",
-                    "DATBI": "",
-                    "DATAB": "31.12.21",
-                    "BKZKP": "0",
-                    "KOKRS": "IteCSControllingUnit 6",
-                    "BUKRS": "IteBUCode 6",
-                    "GSBER": "IteCSBusinessArea 6",
-                    "KOSAR": "IteCSKind 6",
-                    "VERAK": "IteICSResponsible 6",
-                    "VERAK_USER": "IteCSResponsibleUser 6",
-                    "KHINR": "IteCSPartOfHierarchy 6",
-                    "KTEXT": "IteCSName 6",
-                    "LTEXT": "IteCSDescription 6",
-                    "deleted": ""
-                }
-            ]
-        }
-        response = MyRequests.post(self.url, json=json_data, headers=self.header, cookies=self.jar)
-        Assertion.assert_code_status(response, 200)
-        obj = json.loads(response.text)
-        for result in obj['result']:
-            assert result['MESSAGE'] == "Обязательно для заполнения - DATBI", f"The value of 'MESSAGE' is not correct"
-            assert result['TYPE'] == "E", f"The value of 'TYPE' is not correct"
-
-
-# Проверка возможности создания записи без обязательных полей режим "F" (пустой "DATAB")
-
-    def test_null_datab_value_delta_f(self):
-        json_data = {
-            "currentPage": "1",
-            "pageCount": "1",
-            "delta": "F",
-            "item": [
-                {
-                    "row": "1",
-                    "KOSTL": "main test code 7",
-                    "DATBI": "01.01.20",
-                    "DATAB": "",
-                    "BKZKP": "0",
-                    "KOKRS": "IteCSControllingUnit 7",
-                    "BUKRS": "IteBUCode 7",
-                    "GSBER": "IteCSBusinessArea 7",
-                    "KOSAR": "IteCSKind 7",
-                    "VERAK": "IteICSResponsible 7",
-                    "VERAK_USER": "IteCSResponsibleUser 7",
-                    "KHINR": "IteCSPartOfHierarchy 7",
-                    "KTEXT": "IteCSName 7",
-                    "LTEXT": "IteCSDescription 7",
-                    "deleted": ""
-                }
-            ]
-        }
-        response = MyRequests.post(self.url, json=json_data, headers=self.header, cookies=self.jar)
-        Assertion.assert_code_status(response, 200)
-        obj = json.loads(response.text)
-        for result in obj['result']:
-            assert result['MESSAGE'] == "Обязательно для заполнения - DATAB", f"The value of 'MESSAGE' is not correct"
-            assert result['TYPE'] == "E", f"The value of 'TYPE' is not correct"
-
-
-# Проверка возможности создания записи без обязательных полей режим "F" (пустой "BKZKP")
-
-    def test_null_bkzkp_value_delta_f(self):
-        json_data = {
-            "currentPage": "1",
-            "pageCount": "1",
-            "delta": "F",
-            "item": [
-                {
-                    "row": "1",
-                    "KOSTL": "main test code 8",
-                    "DATBI": "01.01.20",
-                    "DATAB": "31.12.21",
-                    "BKZKP": "",
-                    "KOKRS": "IteCSControllingUnit 8",
-                    "BUKRS": "IteBUCode 8",
-                    "GSBER": "IteCSBusinessArea 8",
-                    "KOSAR": "IteCSKind 8",
-                    "VERAK": "IteICSResponsible 8",
-                    "VERAK_USER": "IteCSResponsibleUser 8",
-                    "KHINR": "IteCSPartOfHierarchy 8",
-                    "KTEXT": "IteCSName 8",
-                    "LTEXT": "IteCSDescription 8",
-                    "deleted": ""
-                }
-            ]
-        }
-        response = MyRequests.post(self.url, json=json_data, headers=self.header, cookies=self.jar)
-        Assertion.assert_code_status(response, 200)
-        obj = json.loads(response.text)
-        for result in obj['result']:
-            assert result['MESSAGE'] == "Обязательно для заполнения - BKZKP", f"The value of 'MESSAGE' is not correct"
-            assert result['TYPE'] == "E", f"The value of 'TYPE' is not correct"
-
-
-# Проверка возможности создания записи без обязательных полей режим "F" (пустой "KOKRS")
-
-    def test_null_kokrs_value_delta_f(self):
-        json_data = {
-            "currentPage": "1",
-            "pageCount": "1",
-            "delta": "F",
-            "item": [
-                {
-                    "row": "1",
-                    "KOSTL": "main test code 9",
-                    "DATBI": "01.01.20",
-                    "DATAB": "31.12.21",
-                    "BKZKP": "1",
-                    "KOKRS": "",
-                    "BUKRS": "IteBUCode 9",
-                    "GSBER": "IteCSBusinessArea 9",
-                    "KOSAR": "IteCSKind 9",
-                    "VERAK": "IteICSResponsible 9",
-                    "VERAK_USER": "IteCSResponsibleUser 9",
-                    "KHINR": "IteCSPartOfHierarchy 9",
-                    "KTEXT": "IteCSName 9",
-                    "LTEXT": "IteCSDescription 9",
-                    "deleted": ""
-                }
-            ]
-        }
-        response = MyRequests.post(self.url, json=json_data, headers=self.header, cookies=self.jar)
-        Assertion.assert_code_status(response, 200)
-        obj = json.loads(response.text)
-        for result in obj['result']:
-            assert result['MESSAGE'] == "Обязательно для заполнения - KOKRS", f"The value of 'MESSAGE' is not correct"
-            assert result['TYPE'] == "E", f"The value of 'TYPE' is not correct"
-
 # Проверка возможности создания записи без обязательных полей режим "F" (пустой "BUKRS")
 
     def test_null_bukrs_value_delta_f(self):
@@ -465,40 +326,6 @@ class TestUpdateLogisticStructure(BaseCase):
             assert result['TYPE'] == "E", f"The value of 'TYPE' is not correct"
 
 
-# Проверка возможности создания записи без обязательных полей режим "F" (пустой "GSBER")
-
-    def test_null_gsber_value_delta_f(self):
-        json_data = {
-            "currentPage": "1",
-            "pageCount": "1",
-            "delta": "F",
-            "item": [
-                {
-                    "row": "1",
-                    "KOSTL": "main test code 11",
-                    "DATBI": "01.01.20",
-                    "DATAB": "31.12.21",
-                    "BKZKP": "0",
-                    "KOKRS": "IteCSControllingUnit 11",
-                    "BUKRS": "IteBUCode 11",
-                    "GSBER": "",
-                    "KOSAR": "IteCSKind 11",
-                    "VERAK": "IteICSResponsible 11",
-                    "VERAK_USER": "IteCSResponsibleUser 11",
-                    "KHINR": "IteCSPartOfHierarchy 11",
-                    "KTEXT": "IteCSName 11",
-                    "LTEXT": "IteCSDescription 11",
-                    "deleted": ""
-                }
-            ]
-        }
-        response = MyRequests.post(self.url, json=json_data, headers=self.header, cookies=self.jar)
-        Assertion.assert_code_status(response, 200)
-        obj = json.loads(response.text)
-        for result in obj['result']:
-            assert result['MESSAGE'] == "Обязательно для заполнения - GSBER", f"The value of 'MESSAGE' is not correct"
-            assert result['TYPE'] == "E", f"The value of 'TYPE' is not correct"
-
 
 # Проверка возможности создания записи без обязательных полей режим "F" (пустой "KOSAR")
 
@@ -532,179 +359,6 @@ class TestUpdateLogisticStructure(BaseCase):
         obj = json.loads(response.text)
         for result in obj['result']:
             assert result['MESSAGE'] == "Обязательно для заполнения - KOSAR", f"The value of 'MESSAGE' is not correct"
-            assert result['TYPE'] == "E", f"The value of 'TYPE' is not correct"
-
-
-# Проверка возможности создания записи без обязательных полей режим "F" (пустой "VERAK")
-
-    def test_null_verak_value_delta_f(self):
-        json_data = {
-            "currentPage": "1",
-            "pageCount": "1",
-            "delta": "F",
-            "item": [
-                {
-                    "row": "1",
-                    "KOSTL": "main test code 13",
-                    "DATBI": "01.01.20",
-                    "DATAB": "31.12.21",
-                    "BKZKP": "0",
-                    "KOKRS": "IteCSControllingUnit 13",
-                    "BUKRS": "IteBUCode 13",
-                    "GSBER": "IteCSBusinessArea 13",
-                    "KOSAR": "IteCSKind 13",
-                    "VERAK": "",
-                    "VERAK_USER": "IteCSResponsibleUser 13",
-                    "KHINR": "IteCSPartOfHierarchy 13",
-                    "KTEXT": "IteCSName 13",
-                    "LTEXT": "IteCSDescription 13",
-                    "deleted": ""
-                }
-            ]
-        }
-        response = MyRequests.post(self.url, json=json_data, headers=self.header, cookies=self.jar)
-        Assertion.assert_code_status(response, 200)
-        obj = json.loads(response.text)
-        for result in obj['result']:
-            assert result['MESSAGE'] == "Обязательно для заполнения - VERAK", f"The value of 'MESSAGE' is not correct"
-            assert result['TYPE'] == "E", f"The value of 'TYPE' is not correct"
-
-
-# Проверка возможности создания записи без обязательных полей режим "F" (пустой "VERAK_USER")
-
-    def test_null_verak_user_value_delta_f(self):
-        json_data = {
-            "currentPage": "1",
-            "pageCount": "1",
-            "delta": "F",
-            "item": [
-                {
-                    "row": "1",
-                    "KOSTL": "main test code 14",
-                    "DATBI": "01.01.20",
-                    "DATAB": "31.12.21",
-                    "BKZKP": "0",
-                    "KOKRS": "IteCSControllingUnit 14",
-                    "BUKRS": "IteBUCode 14",
-                    "GSBER": "IteCSBusinessArea 14",
-                    "KOSAR": "IteCSKind 14",
-                    "VERAK": "IteICSResponsible 14",
-                    "VERAK_USER": "",
-                    "KHINR": "IteCSPartOfHierarchy 14",
-                    "KTEXT": "IteCSName 14",
-                    "LTEXT": "IteCSDescription 14",
-                    "deleted": ""
-                }
-            ]
-        }
-        response = MyRequests.post(self.url, json=json_data, headers=self.header, cookies=self.jar)
-        Assertion.assert_code_status(response, 200)
-        obj = json.loads(response.text)
-        for result in obj['result']:
-            assert result['MESSAGE'] == "Обязательно для заполнения - VERAK_USER", f"The value of 'MESSAGE' is not correct"
-            assert result['TYPE'] == "E", f"The value of 'TYPE' is not correct"
-
-
-# Проверка возможности создания записи без обязательных полей режим "F" (пустой "KHINR")
-
-    def test_null_khinr_value_delta_f(self):
-        json_data = {
-            "currentPage": "1",
-            "pageCount": "1",
-            "delta": "F",
-            "item": [
-                {
-                    "row": "1",
-                    "KOSTL": "main test code 17",
-                    "DATBI": "01.01.20",
-                    "DATAB": "31.12.21",
-                    "BKZKP": "0",
-                    "KOKRS": "IteCSControllingUnit 17",
-                    "BUKRS": "IteBUCode 14",
-                    "GSBER": "IteCSBusinessArea 17",
-                    "KOSAR": "IteCSKind 17",
-                    "VERAK": "IteICSResponsible 17",
-                    "VERAK_USER": "IteCSResponsibleUser 17",
-                    "KHINR": "",
-                    "KTEXT": "IteCSName 17",
-                    "LTEXT": "IteCSDescription 17",
-                    "deleted": ""
-                }
-            ]
-        }
-        response = MyRequests.post(self.url, json=json_data, headers=self.header, cookies=self.jar)
-        Assertion.assert_code_status(response, 200)
-        obj = json.loads(response.text)
-        for result in obj['result']:
-            assert result['MESSAGE'] == "Обязательно для заполнения - KHINR", f"The value of 'MESSAGE' is not correct"
-            assert result['TYPE'] == "E", f"The value of 'TYPE' is not correct"
-
-# Проверка возможности создания записи без обязательных полей режим "F" (пустой "KTEXT")
-
-    def test_null_ktext_value_delta_f(self):
-        json_data = {
-            "currentPage": "1",
-            "pageCount": "1",
-            "delta": "F",
-            "item": [
-                {
-                    "row": "1",
-                    "KOSTL": "main test code 15",
-                    "DATBI": "01.01.20",
-                    "DATAB": "31.12.21",
-                    "BKZKP": "0",
-                    "KOKRS": "IteCSControllingUnit 15",
-                    "BUKRS": "IteBUCode 15",
-                    "GSBER": "IteCSBusinessArea 15",
-                    "KOSAR": "IteCSKind 15",
-                    "VERAK": "IteICSResponsible 15",
-                    "VERAK_USER": "IteCSResponsibleUser 15",
-                    "KHINR": "IteCSPartOfHierarchy 15",
-                    "KTEXT": "",
-                    "LTEXT": "IteCSDescription 15",
-                    "deleted": ""
-                }
-            ]
-        }
-        response = MyRequests.post(self.url, json=json_data, headers=self.header, cookies=self.jar)
-        Assertion.assert_code_status(response, 200)
-        obj = json.loads(response.text)
-        for result in obj['result']:
-            assert result['MESSAGE'] == "Обязательно для заполнения - KTEXT", f"The value of 'MESSAGE' is not correct"
-            assert result['TYPE'] == "E", f"The value of 'TYPE' is not correct"
-
-# Проверка возможности создания записи без обязательных полей режим "F" (пустой "LTEXT")
-
-    def test_null_ltext_value_delta_f(self):
-        json_data = {
-            "currentPage": "1",
-            "pageCount": "1",
-            "delta": "F",
-            "item": [
-                {
-                    "row": "1",
-                    "KOSTL": "main test code 16",
-                    "DATBI": "01.01.20",
-                    "DATAB": "31.12.21",
-                    "BKZKP": "0",
-                    "KOKRS": "IteCSControllingUnit 16",
-                    "BUKRS": "IteBUCode 16",
-                    "GSBER": "IteCSBusinessArea 16",
-                    "KOSAR": "IteCSKind 16",
-                    "VERAK": "IteICSResponsible 16",
-                    "VERAK_USER": "IteCSResponsibleUser 16",
-                    "KHINR": "IteCSPartOfHierarchy 16",
-                    "KTEXT": "IteCSName 16",
-                    "LTEXT": "",
-                    "deleted": ""
-                }
-            ]
-        }
-        response = MyRequests.post(self.url, json=json_data, headers=self.header, cookies=self.jar)
-        Assertion.assert_code_status(response, 200)
-        obj = json.loads(response.text)
-        for result in obj['result']:
-            assert result['MESSAGE'] == "Обязательно для заполнения - LTEXT", f"The value of 'MESSAGE' is not correct"
             assert result['TYPE'] == "E", f"The value of 'TYPE' is not correct"
 
 
